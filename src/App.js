@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios'; //to call foursquare venues
 
 class App extends Component {
 
   //mounts component + renders map in window
   componentDidMount() {
+    this.getVenues()
     this.renderMap()
   }
 
@@ -13,6 +14,26 @@ class App extends Component {
   renderMap = () => {
     loadScript("https://maps.googleapis.com/maps/api/js?client=gme-nianticinc&callback=initMap")
     window.initMap = this.initMap
+  }
+
+  getVenues = () => {
+    const endPoint = "https://api.foursquare.com/v2/venues/explore"
+    const parameters = {
+      client_id: "WNVAX2X5TR1B45L5VZYWPWNWHRGNVOC2XCV2J4LZTY5LP3XG",
+      client_secret: "OION40GRCHFOBEABP5LHGTD5CCVVP4BVNY2YVXDMWHTUY13Q",
+      query: "coffee",
+      near: "New York City",
+      v: "20181109"
+    }
+
+    axios
+      .get(endPoint + new URLSearchParams(parameters))
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log("error: " + error)
+      })
   }
 
   initMap = () => {
@@ -26,8 +47,9 @@ class App extends Component {
 
 
   render() {
+    // contains map
     return (
-      <main> //contains map
+      <main>
         <div id="map"></div>
       </main>
     )
