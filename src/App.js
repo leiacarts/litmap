@@ -10,7 +10,6 @@ class App extends Component {
   //mounts component + renders map in window
   componentDidMount() {
     this.getVenues()
-    this.renderMap()
   }
 
   //loads api key and calls back to the window
@@ -19,6 +18,7 @@ class App extends Component {
     window.initMap = this.initMap
   }
 
+  //calls api
   getVenues = () => {
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const parameters = {
@@ -29,13 +29,14 @@ class App extends Component {
       v: "20181109"
     }
 
+    //retrieves + stores data
     axios
       .get(endPoint + new URLSearchParams(parameters))
       .then(response => {
         this.setState({
           //array of objects (coords) from foursquare
           venues: response.data.response.groups[0].items
-        })
+        }, this.renderMap())
       })
       .catch(error => {
         console.log("error: " + error)
@@ -43,11 +44,20 @@ class App extends Component {
   }
 
   initMap = () => {
-    //puts map in window
+    //displays map in window
     //initial coords @ nyc
     let map = new window.google.maps.Map(document.getElementById('map'), {
         center: {lat: 40.7128, lng: -74.0060},
         zoom: 12
+    })
+
+    //loops through venues array inside state
+    //adds a marker to each
+    this.state.venues.map(myVenue => {
+      let marker = new window.google.maps.Marker({
+        position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
+        map: map,
+      })
     })
   }
 
