@@ -3,6 +3,9 @@ import './App.css';
 import axios from 'axios'; //to call foursquare venues
 
 class App extends Component {
+  state = {
+    venues: []
+  }
 
   //mounts component + renders map in window
   componentDidMount() {
@@ -17,11 +20,11 @@ class App extends Component {
   }
 
   getVenues = () => {
-    const endPoint = "https://api.foursquare.com/v2/venues/explore"
+    const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const parameters = {
       client_id: "WNVAX2X5TR1B45L5VZYWPWNWHRGNVOC2XCV2J4LZTY5LP3XG",
       client_secret: "OION40GRCHFOBEABP5LHGTD5CCVVP4BVNY2YVXDMWHTUY13Q",
-      query: "coffee",
+      query: "bookstore",
       near: "New York City",
       v: "20181109"
     }
@@ -29,7 +32,10 @@ class App extends Component {
     axios
       .get(endPoint + new URLSearchParams(parameters))
       .then(response => {
-        console.log(response)
+        this.setState({
+          //array of objects (coords) from foursquare
+          venues: response.data.response.groups[0].items
+        })
       })
       .catch(error => {
         console.log("error: " + error)
