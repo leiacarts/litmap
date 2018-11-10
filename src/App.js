@@ -44,6 +44,7 @@ class App extends Component {
   }
 
   initMap = () => {
+
     //displays map in window
     //initial coords @ nyc
     let map = new window.google.maps.Map(document.getElementById('map'), {
@@ -51,25 +52,26 @@ class App extends Component {
         zoom: 12
     })
 
+    //creates infobox per marker
+    let infowindow = new window.google.maps.InfoWindow()
+
     //loops through venues array inside state
-    //infobox per marker
-    //adds a marker to each
     this.state.venues.map(myVenue => {
 
       let contents = `${myVenue.venue.name}`
 
-      let infowindow = new window.google.maps.InfoWindow({
-        content: contents
-      })
-
+      //adds a marker to each venue
       let marker = new window.google.maps.Marker({
         position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
         map: map,
         title: myVenue.venue.name
       })
 
-      //opens infobox onclick
+      //marker
       marker.addListener('click', function() {
+        //changes contents
+        infowindow.setContent(contents)
+        //opens infobox onclick
         infowindow.open(map, marker)
       })
     })
