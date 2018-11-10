@@ -52,11 +52,25 @@ class App extends Component {
     })
 
     //loops through venues array inside state
+    //infobox per marker
     //adds a marker to each
     this.state.venues.map(myVenue => {
+
+      let contents = `${myVenue.venue.name}`
+
+      let infowindow = new window.google.maps.InfoWindow({
+        content: contents
+      })
+
       let marker = new window.google.maps.Marker({
         position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
         map: map,
+        title: myVenue.venue.name
+      })
+
+      //opens infobox onclick
+      marker.addListener('click', function() {
+        infowindow.open(map, marker)
       })
     })
   }
