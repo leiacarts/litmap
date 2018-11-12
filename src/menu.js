@@ -1,56 +1,44 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import App from './App.js';
 import { slide as Menu } from 'react-burger-menu';
-import Drawer from '@material-ui/core/Drawer';
 
 
 class MenuComp extends Component {
-  state = {
-    open: false,
-    query: ""
+
+
+  //opens marker on click
+  openSesame = venueName => {
+    this.props.markers.map(marker => {
+      if (marker.title === venueName) {
+        window.google.maps.event.trigger(marker, "click")
+      }
+    })
   }
 
-  //updates search query
-  updateQuery = (newQuery) => {
-    this.setState({ query: newQuery })
-    this.props.filterVenues(newQuery);
-  }
 
   //toggles menu drawer open
   render() {
     return (
-      <Drawer open={this.props.open} onClose={this.props.toggleMenu}>
-        <section className="menu" aria-label="list of venues" role="application">
-          <input
-            className='filter'
-            type='text'
-            placeholder='filter'
-            autoFocus
-            id="query-filter"
-            onChange= {e => this.updateQuery(e.target.value)}
-            value={this.props.query}
-            aria-label="locations filter"
-          />
-          <ul className="list">
-            {this.props.venues && this.props.venues.map((location, index) => {
-              return (
-                <li
-                  className='listing'
-                  key={index}
-                  aria-label={location.venue.name}
-                  tabIndex="0"
-                >
-                  <button key={index} onClick={() => this.props.clickListItem(index)}>{location.name.toString().toLowerCase().index()}</button>
-                </li>
-              )
-            })}
-          </ul>
-        </section>
-      </Drawer>
-    )
+      <Menu width={'25%'} isOpen noOverlay>
+        <div className="venueList" aria-label="list of venues">
+          {this.props.venues.map(myVenue => (
+              <li
+                role="menuitem"
+                onClick{() => {
+                  this.openSesame(myVenue.venue.name);
+                }}
+                aria-label={myVenue.venue.name}
+                tabIndex="0"
+                id={myVenue.venue.id}
+                key={myVenue.venue.id}
+              >
+                {myVenue.venue.name}
+                <br/>
+              </li>
+          ))}
+        </div>
+      </Menu>
+    );
   }
-
 }
 
 export default MenuComp

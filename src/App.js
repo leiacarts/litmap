@@ -206,6 +206,18 @@ class App extends Component {
         //opens infobox onclick
         infowindow.open(map, marker)
       })
+
+      //updates markers on filter
+      if (this.state.markers.length !== props.locations.length) {
+          this.closeInfoWindow();
+          this.updateMarkers(props.locations);
+          this.setState({activeMarker: null});
+
+        return;
+      }
+
+
+
     })
   }
 
