@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { slide as Menu } from 'react-burger-menu';
+import './styles.css'
 
 
 class MenuComp extends Component {
@@ -23,7 +24,7 @@ class MenuComp extends Component {
           {this.props.venues.map(myVenue => (
               <li
                 role="menuitem"
-                onClick{() => {
+                onClick={() => {
                   this.openSesame(myVenue.venue.name);
                 }}
                 aria-label={myVenue.venue.name}

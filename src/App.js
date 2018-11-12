@@ -1,33 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'; //to call foursquare venues
-import Menu from './menu';
+import MenuComp from './menu';
+import Search from './search'
 import './styles.css';
 import escapeRegExp from 'escape-string-regexp';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faBars)
 
 class App extends Component {
-  state = {
-    venues: [],
-    markers: [],
-    showVenues: [],
-    query: '',
-    hiddenVenues: [],
-    filtered: null,
-    open: false
-  }
 
-  styles = {
-    button: {
-      position: "absolute",
-      left: 10,
-      top: 10,
-      padding: 10,
-      background: "#eeeee"
+  //empty arrays for values
+  constructor(props) {
+    super(props)
+    this.state = {
+      venues: [],
+      markers: [],
+      showVenues: [],
+      query: '',
+      hiddenVenues: []
     }
   }
 
@@ -36,19 +26,13 @@ class App extends Component {
     this.getVenues()
   }
 
-  toggleMenu = () => {
-    this.setState({
-      open: !this.state.open
-    });
-  }
-
   //loads api key and calls back to the window
   renderMap = () => {
     loadScript("https://maps.googleapis.com/maps/api/js?client=gme-nianticinc&callback=initMap")
     window.initMap = this.initMap
   }
 
-  //calls api
+  //calls api and gets venues
   getVenues = () => {
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const parameters = {
@@ -59,7 +43,8 @@ class App extends Component {
       v: "20181109"
     }
 
-    //retrieves + stores data
+    //retrieves + stores data asynchronously
+    //map loads only after response is fetched
     axios
       .get(endPoint + new URLSearchParams(parameters))
       .then(response => {
@@ -73,6 +58,7 @@ class App extends Component {
       })
   }
 
+  //creates map
   initMap = () => {
 
     //map style
@@ -181,11 +167,13 @@ class App extends Component {
           }
     })
 
+    //sets map style on main
     map.mapTypes.set('styled_map', styledMapType);
         map.setMapTypeId('styled_map');
 
     //creates infobox per marker
     let infowindow = new window.google.maps.InfoWindow()
+    this.infowindow = infowindow
 
     //loops through venues array inside state
     this.state.venues.map(myVenue => {
@@ -206,19 +194,8 @@ class App extends Component {
         //opens infobox onclick
         infowindow.open(map, marker)
       })
-
-      //updates markers on filter
-      if (this.state.markers.length !== props.locations.length) {
-          this.closeInfoWindow();
-          this.updateMarkers(props.locations);
-          this.setState({activeMarker: null});
-
-        return;
-      }
-
-
-
     })
+
   }
 
   updateQuery = query => {
@@ -228,7 +205,7 @@ class App extends Component {
     let hiddenVenues
 
     if (query) {
-      const match = new RegExp(escapeRegExp(query), "i")
+      let match = new RegExp(escapeRegExp(query), "i")
       filterVenues = this.state.venues.filter(myVenue =>
         match.test(myVenue.venue.name)
       )
@@ -236,44 +213,49 @@ class App extends Component {
       hiddenVenues = this.state.markers.filter(marker =>
         filterVenues.every(myVenue => myVenue.venue.name !== marker.title)
       )
-
       hiddenVenues.forEach(marker => marker.setVisible(false))
-
       this.setState({ hiddenVenues })
     } else {
       this.setState({ venues: this.state.showVenues })
       this.state.markers.forEach(marker => marker.setVisible(true))
     }
-    console.log(query)
   }
 
   render() {
     // contains map
     return (
-      <div className="App">
+      <main>
+
         <nav className="topbar" aria-label="header" tabIndex="0">
           <h2>lit map nyc</h2>
-          <button style={this.styles.button} onClick={this.toggleMenu}><FontAwesomeIcon icon="bars"/></button>
         </nav>
 
-        <main>
-          <div id="map"
-            aria-label="map"
-            role="application"
-            locations={this.state.filtered}
-          >
-          </div>
-        </main>
+        <div id="search" aria-label="search">
+          <Search
+            venues={this.state.showVenues}
+            markers={this.state.markers}
+            filteredVenues={this.filteredVenues}
+            query={this.state.query}
+            clearQuery={this.clearQuery}
+            updateQuery={j => this.updateQuery(j)}
+            clickVenue={this.clickVenue}
+          />
+        </div>
 
-        <Menu
-          className="menu"
-          locations={this.state.filtered}
-          open={this.state.open}
-          toggleMenu={this.toggleMenu}
-          filterVenues={this.updateQuery}
-          clickListItem={this.clickListItem}
-        />
-      </div>
+        <div id="menu container" aria-label="menu">
+          <MenuComp
+            venues={this.state.venues}
+            markers={this.state.markers}
+          />
+        </div>
+
+        <div id="map"
+          aria-label="map"
+          role="application"
+        >
+        </div>
+
+      </main>
     );
   }
 }
