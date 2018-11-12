@@ -38,7 +38,7 @@ class MenuComp extends Component {
                 <li
                   className='listing'
                   key={index}
-                  aria-label={myVenue.venue.name}
+                  aria-label={location.venue.name}
                   tabIndex="0"
                 >
                   <button key={index} onClick={() => this.props.clickListItem(index)}>{location.name.toString().toLowerCase().index()}</button>
