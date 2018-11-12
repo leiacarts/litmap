@@ -1,15 +1,65 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'; //to call foursquare venues
+import Menu from './menu';
+import './styles.css';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faBars)
 
 class App extends Component {
   state = {
-    venues: []
+    venues: [],
+    filtered: null,
+    selectedIndex: null,
+    open: false
+  }
+
+  styles = {
+    button: {
+      position: "absolute",
+      left: 10,
+      top: 10,
+      padding: 10,
+      background: "#eeeee"
+    }
   }
 
   //mounts component + renders map in window
   componentDidMount() {
     this.getVenues()
+    this.setState({
+      filtered: this.filterVenues(this.state.venues, "")
+    });
+  }
+
+  toggleMenu = () => {
+    this.setState({
+      open: !this.state.open
+    });
+  }
+
+  updateQuery = (query) => {
+    this.setState({
+      ...this.state,
+      selectedIndex: null,
+      filtered: this.filterVenues(this.state.venues, query)
+    })
+  }
+
+  filterVenues = (locations, query) => {
+    //filter locations to match search terms
+    return locations.filter(location => location.name);
+  }
+
+  clickListItem = (index) => {
+    //set state to chosen locations in array
+    this.setState({
+      selectedIndex: index,
+      open: !this.state.open
+    })
   }
 
   //loads api key and calls back to the window
@@ -138,7 +188,7 @@ class App extends Component {
         "stylers": [{"color": "#ffffff"}]
     }
 ],
-            {name: 'Styled Map'});
+            {name: 'Stylized'});
 
 
     //displays map in window
@@ -184,10 +234,30 @@ class App extends Component {
   render() {
     // contains map
     return (
-      <main>
-        <div id="map"></div>
-      </main>
-    )
+      <div id="App">
+        <nav className="topbar">
+          <h2>lit map nyc</h2>
+          <button style={this.styles.button} onClick={this.toggleMenu}><FontAwesomeIcon icon="bars"/></button>
+        </nav>
+
+        <main>
+          <div id="map"
+            locations={this.state.filtered}
+            selectedIndex={this.state.selectedIndex}
+          >
+          </div>
+        </main>
+
+        <Menu
+          className="menu"
+          locations={this.state.filtered}
+          open={this.state.open}
+          toggleMenu={this.toggleMenu}
+          filterVenues={this.updateQuery}
+          clickListItem={this.clickListItem}
+          selectedIndex={this.state.selectedIndex} />
+      </div>
+    );
   }
 }
 
