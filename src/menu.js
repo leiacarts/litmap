@@ -21,7 +21,7 @@ class MenuComp extends Component {
   render() {
     return (
       <Drawer open={this.props.open} onClose={this.props.toggleMenu}>
-        <section className="menu">
+        <section className="menu" aria-label="list of venues" role="application">
           <input
             className='filter'
             type='text'
@@ -30,11 +30,17 @@ class MenuComp extends Component {
             id="query-filter"
             onChange= {e => this.updateQuery(e.target.value)}
             value={this.props.query}
+            aria-label="locations filter"
           />
           <ul className="list">
             {this.props.venues && this.props.venues.map((location, index) => {
               return (
-                <li className='listing' key={index}>
+                <li
+                  className='listing'
+                  key={index}
+                  aria-label={myVenue.venue.name}
+                  tabIndex="0"
+                >
                   <button key={index} onClick={() => this.props.clickListItem(index)}>{location.name.toString().toLowerCase().index()}</button>
                 </li>
               )

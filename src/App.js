@@ -238,14 +238,16 @@ class App extends Component {
   render() {
     // contains map
     return (
-      <div id="App">
-        <nav className="topbar">
+      <div className="App">
+        <nav className="topbar" aria-label="header" tabIndex="0">
           <h2>lit map nyc</h2>
           <button style={this.styles.button} onClick={this.toggleMenu}><FontAwesomeIcon icon="bars"/></button>
         </nav>
 
         <main>
           <div id="map"
+            aria-label="map"
+            role="application"
             locations={this.state.filtered}
           >
           </div>
