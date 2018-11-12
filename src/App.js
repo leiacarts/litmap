@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'; //to call foursquare venues
 import MenuComp from './menu';
-import Search from './search'
+import Search from './search';
 import './styles.css';
 import escapeRegExp from 'escape-string-regexp';
 
@@ -229,18 +229,6 @@ class App extends Component {
         <nav className="topbar" aria-label="header" tabIndex="0">
           <h2>lit map nyc</h2>
         </nav>
-
-        <div id="search" aria-label="search">
-          <Search
-            venues={this.state.showVenues}
-            markers={this.state.markers}
-            filteredVenues={this.filteredVenues}
-            query={this.state.query}
-            clearQuery={this.clearQuery}
-            updateQuery={j => this.updateQuery(j)}
-            clickVenue={this.clickVenue}
-          />
-        </div>
 
         <div id="menu container" aria-label="menu">
           <MenuComp
