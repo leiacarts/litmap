@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios'; //to call foursquare venues
 import Menu from './menu';
 import './styles.css';
+import escapeRegExp from 'escape-string-regexp';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -12,8 +13,11 @@ library.add(faBars)
 class App extends Component {
   state = {
     venues: [],
+    markers: [],
+    showVenues: [],
+    query: '',
+    hiddenVenues: [],
     filtered: null,
-    selectedIndex: null,
     open: false
   }
 
@@ -30,36 +34,12 @@ class App extends Component {
   //mounts component + renders map in window
   componentDidMount() {
     this.getVenues()
-    this.setState({
-      filtered: this.filterVenues(this.state.venues, "")
-    });
   }
 
   toggleMenu = () => {
     this.setState({
       open: !this.state.open
     });
-  }
-
-  updateQuery = (query) => {
-    this.setState({
-      ...this.state,
-      selectedIndex: null,
-      filtered: this.filterVenues(this.state.venues, query)
-    })
-  }
-
-  filterVenues = (locations, query) => {
-    //filter locations to match search terms
-    return locations.filter(location => location.name);
-  }
-
-  clickListItem = (index) => {
-    //set state to chosen locations in array
-    this.setState({
-      selectedIndex: index,
-      open: !this.state.open
-    })
   }
 
   //loads api key and calls back to the window
@@ -186,8 +166,7 @@ class App extends Component {
         "featureType": "water",
         "elementType": "labels.text.stroke",
         "stylers": [{"color": "#ffffff"}]
-    }
-],
+    }],
             {name: 'Stylized'});
 
 
@@ -230,6 +209,31 @@ class App extends Component {
     })
   }
 
+  updateQuery = query => {
+    this.setState({ query })
+    this.state.markers.map(marker => marker.setVisible(true))
+    let filterVenues
+    let hiddenVenues
+
+    if (query) {
+      const match = new RegExp(escapeRegExp(query), "i")
+      filterVenues = this.state.venues.filter(myVenue =>
+        match.test(myVenue.venue.name)
+      )
+      this.setState({ venues: filterVenues })
+      hiddenVenues = this.state.markers.filter(marker =>
+        filterVenues.every(myVenue => myVenue.venue.name !== marker.title)
+      )
+
+      hiddenVenues.forEach(marker => marker.setVisible(false))
+
+      this.setState({ hiddenVenues })
+    } else {
+      this.setState({ venues: this.state.showVenues })
+      this.state.markers.forEach(marker => marker.setVisible(true))
+    }
+    console.log(query)
+  }
 
   render() {
     // contains map
@@ -243,7 +247,6 @@ class App extends Component {
         <main>
           <div id="map"
             locations={this.state.filtered}
-            selectedIndex={this.state.selectedIndex}
           >
           </div>
         </main>
@@ -255,7 +258,7 @@ class App extends Component {
           toggleMenu={this.toggleMenu}
           filterVenues={this.updateQuery}
           clickListItem={this.clickListItem}
-          selectedIndex={this.state.selectedIndex} />
+        />
       </div>
     );
   }
