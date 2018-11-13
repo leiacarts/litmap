@@ -184,8 +184,16 @@ class App extends Component {
       let marker = new window.google.maps.Marker({
         position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
         map: map,
+        animation: window.google.maps.Animation.DROP,
         title: myVenue.venue.name
       })
+
+      function animation() {
+        marker.setAnimation(window.google.maps.Animation.BOUNCE)
+        setTimeout(function(){
+          marker.setAnimation(null)
+        }, 500)
+      }
 
       //pushes marker
       this.state.markers.push(marker)
@@ -196,6 +204,7 @@ class App extends Component {
         infowindow.setContent(contents)
         //opens infobox onclick
         infowindow.open(map, marker)
+        animation()
         marker.setIcon('http://www.myiconfinder.com/uploads/iconsets/256-256-56165014858e6dbadaf3ba00d782f125.png');
       })
     })
