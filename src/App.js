@@ -207,7 +207,7 @@ class App extends Component {
         //opens infobox onclick
         infowindow.open(map, marker, null)
         animation()
-        marker.setIcon('http://www.myiconfinder.com/uploads/iconsets/256-256-56165014858e6dbadaf3ba00d782f125.png');
+        marker.setIcon('http://i68.tinypic.com/24bqgp3.png');
       })
     })
 
