@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'; //to call foursquare venues
 import MenuComp from './menu';
+import ErrorAlert from './error';
 import Search from './search'
 import './styles.css';
 import escapeRegExp from 'escape-string-regexp';
@@ -204,7 +205,7 @@ class App extends Component {
         //changes contents
         infowindow.setContent(contents)
         //opens infobox onclick
-        infowindow.open(map, marker)
+        infowindow.open(map, marker, null)
         animation()
         marker.setIcon('http://www.myiconfinder.com/uploads/iconsets/256-256-56165014858e6dbadaf3ba00d782f125.png');
       })
@@ -213,7 +214,7 @@ class App extends Component {
   }
 
   updateQuery = query => {
-    this.setState({ query })
+    this.setState({ query: query })
     this.state.markers.map(marker => marker.setVisible(true))
     let filterVenues
     let hiddenVenues
@@ -231,12 +232,17 @@ class App extends Component {
       this.setState({ hiddenVenues })
     } else {
       this.setState({ venues: this.state.showVenues })
+
       this.state.markers.forEach(marker => marker.setVisible(true))
     }
+    console.log(query)
   }
 
   render() {
     // contains map
+    if (this.state.hasError) {
+      return <div id="error-alert" aria-label="error message"><ErrorAlert/></div>
+    } else {
     return (
       <main>
 
@@ -257,11 +263,12 @@ class App extends Component {
             markers={this.state.markers}
             filteredVenues={this.filteredVenues}
             query={this.state.query}
-            clearQuery={this.clearQuery}
+            clearQuery={b => this.clearQuery(b)}
             updateQuery={b => this.updateQuery(b)}
             clickVenue={this.clickVenue}
           />
         </div>
+
 
         <div id="menu container" aria-label="menu">
           <MenuComp
@@ -279,6 +286,7 @@ class App extends Component {
       </main>
     );
   }
+}
 }
 
 //loads scripts to the window

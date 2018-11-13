@@ -7,6 +7,7 @@
 * [Features](#features)
 * [Installation](#installation)
 * [Built With](#built-with)
+* [Dependencies](#dependencies)
 * [Acknowledgements](#acknowledgements)
 
 ## Overview
@@ -19,8 +20,8 @@
 
 ## Features
 
-*
-*
+* Google Maps API
+* Search filter
 *
 
 ## Installation
@@ -34,6 +35,21 @@ Download project repo. Install npm by running `npm install` in the terminal. Sta
 * Javascript
 * React
 
+## Dependencies
+
+* create-react-app
+* axios
+* react-burger-menu
+* Escape RegExp
+* Google Maps API
+* FourSquare API
+
 ## Acknowledgements
 
+* [Google Developer Maps]()
+* [FourSquare Documentation]()
+* [Yahya]()
+* []()
+* []()
+* []()
 * []()

@@ -12,7 +12,7 @@ class Search extends Component {
           placeholder="search filter"
           aria-label="venue filter"
           value={this.props.query}
-          onChange={event => this.props.updateQuery(event.target.value)}
+          onChange= {(e) => this.props.updateQuery(e.target.value)}
         />
       </div>
     );
