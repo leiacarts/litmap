@@ -178,14 +178,15 @@ class App extends Component {
     //loops through venues array inside state
     this.state.venues.map(myVenue => {
 
-      let contents = `${myVenue.venue.name}`
+      let contents = `${myVenue.venue.name}<br><i>${myVenue.venue.location.address}</i>`
 
       //adds a marker to each venue
       let marker = new window.google.maps.Marker({
         position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
         map: map,
         animation: window.google.maps.Animation.DROP,
-        title: myVenue.venue.name
+        title: myVenue.venue.name,
+        location: myVenue.venue.location.address
       })
 
       function animation() {
