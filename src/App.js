@@ -230,6 +230,18 @@ class App extends Component {
           <h2>lit map nyc</h2>
         </nav>
 
+        <div id="search" aria-label="search">
+          <Search
+            venues={this.state.showVenues}
+            markers={this.state.markers}
+            filteredVenues={this.filteredVenues}
+            query={this.state.query}
+            clearQuery={this.clearQuery}
+            updateQuery={j => this.updateQuery(j)}
+            clickVenue={this.clickVenue}
+          />
+        </div>
+
         <div id="menu container" aria-label="menu">
           <MenuComp
             venues={this.state.venues}
