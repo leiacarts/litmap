@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Search from './search';
+import App from './App';
 import { slide as Menu } from 'react-burger-menu';
 import './styles.css'
+
 
 
 class MenuComp extends Component {

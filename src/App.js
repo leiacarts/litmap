@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'; //to call foursquare venues
 import MenuComp from './menu';
-import Search from './search';
+import Search from './search'
 import './styles.css';
 import escapeRegExp from 'escape-string-regexp';
 
