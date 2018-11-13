@@ -12,11 +12,11 @@
 
 ## Overview
 
-
+LIT MAP NYC is a react-based application that maps out bookstores in New York City.
 
 ## Learning Objectives
 
-
+To use react in conjunction with Google Maps API.
 
 ## Features
 
@@ -46,10 +46,6 @@ Download project repo. Install npm by running `npm install` in the terminal. Sta
 
 ## Acknowledgements
 
-* [Google Developer Maps]()
-* [FourSquare Documentation]()
-* [Yahya]()
-* []()
-* []()
-* []()
-* []()
+* [Google Maps Documentation](https://developers.google.com/maps/documentation/)
+* [FourSquare Documentation](https://developer.foursquare.com)
+* [Yahya Elharony](https://www.youtube.com/channel/UCcWSbBe_s-T_gZRnqFbtyIA)
