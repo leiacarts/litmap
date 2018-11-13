@@ -1,6 +1,7 @@
 html,
 body {
   margin: 0;
+  padding: 0;
 }
 
 #app {
@@ -40,8 +41,8 @@ body {
   position: fixed;
   width: 36px;
   height: 30px;
-  left: 36px;
-  top: 36px;
+  left: 15px;
+  top: 15px;
 }
 
 /* Color/shape of burger icon bars */
@@ -63,8 +64,8 @@ body {
 /* General sidebar styles */
 .bm-menu {
   background: #373a47;
-  padding: 2.5em 1.5em 0;
-  font-size: 1.15em;
+  padding: 2.5em 1em 0;
+  font-size: .75em;
 }
 
 /* Morph shape necessary with bubble or elastic */

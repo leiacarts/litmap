@@ -46,8 +46,9 @@ nav {
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
+  list-style-type: none;
 }
 
-.topbar {
+#topbar {
   max-height: 55px;
 }

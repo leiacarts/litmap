@@ -187,12 +187,16 @@ class App extends Component {
         title: myVenue.venue.name
       })
 
+      //pushes marker
+      this.state.markers.push(marker)
+
       //marker
       marker.addListener('click', function() {
         //changes contents
         infowindow.setContent(contents)
         //opens infobox onclick
         infowindow.open(map, marker)
+        marker.setIcon('http://www.myiconfinder.com/uploads/iconsets/256-256-56165014858e6dbadaf3ba00d782f125.png');
       })
     })
 
@@ -226,18 +230,25 @@ class App extends Component {
     return (
       <main>
 
-        <nav className="topbar" aria-label="header" tabIndex="0">
+        <nav
+          id="topbar"
+          aria-label="header"
+          tabIndex="0"
+        >
           <h2>lit map nyc</h2>
         </nav>
 
-        <div id="search" aria-label="search">
+        <div
+          id="search"
+          aria-label="search"
+          >
           <Search
             venues={this.state.showVenues}
             markers={this.state.markers}
             filteredVenues={this.filteredVenues}
             query={this.state.query}
             clearQuery={this.clearQuery}
-            updateQuery={j => this.updateQuery(j)}
+            updateQuery={b => this.updateQuery(b)}
             clickVenue={this.clickVenue}
           />
         </div>
@@ -268,6 +279,9 @@ function loadScript(url) {
   script.async = true
   script.defer = true
   index.parentNode.insertBefore(script, index)
+  script.onerror = function() {
+    alert("error!");
+  };
 }
 
 export default App;
