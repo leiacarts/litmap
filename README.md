@@ -13,7 +13,7 @@
 
 ## Overview
 
-is a React-based app that allows users to see a list of bookstore and cafe locations in NYC. Google Maps API keys allow users to filter their options and “light up” the map by visiting different locations.
+LIT MAP NYC is a React-based app that allows users to see a list of bookstore and cafe locations in NYC. Google Maps API keys allow users to filter their options and “light up” the map by visiting different locations.
 
 ## Learning Objectives
 
