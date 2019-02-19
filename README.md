@@ -1,4 +1,4 @@
-# Neighborhood Map Project
+# Lit Map NYC
 
 ## Table of Contents
 
@@ -22,7 +22,7 @@ To use react in conjunction with Google Maps API.
 
 * Google Maps API
 * Search filter
-*
+* Accessed Location Tracker
 
 ## Installation
 
