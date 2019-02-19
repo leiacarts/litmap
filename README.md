@@ -1,4 +1,4 @@
-# Lit Map NYC
+# LIT MAP NYC
 
 ## Table of Contents
 
